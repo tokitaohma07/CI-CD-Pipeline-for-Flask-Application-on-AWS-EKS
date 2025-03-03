@@ -303,6 +303,34 @@ pipeline {
 }
 
 
+
+Apply Your Kubernetes YAML Files
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+kubectl get pods
+
+
+
+
+# Authenticate with ECR
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b0m7c0k4
+
+# Build and tag the image
+docker build -t flask-app .
+docker tag flask-app:latest public.ecr.aws/b0m7c0k4/jenkins-flask-repository:latest
+
+# Push the image to ECR
+docker push public.ecr.aws/b0m7c0k4/jenkins-flask-repository:latest
+
+
+kubectl rollout restart deployment flask-app
+
+
+
+
+
 #Step 7: Deploy and Test
 
 Once the Jenkins pipeline runs successfully, check the deployment:
@@ -311,9 +339,6 @@ kubectl get pods
 kubectl get services
 
 Find the EXTERNAL-IP of the LoadBalancer service and visit it in your browser.
-
-
-
 
 
 
@@ -426,4 +451,37 @@ Disk space issues on Jenkins EC2 instance	- Increased storage, cleared unused Do
 ✔ SonarQube & Trivy ensure code quality and security before deployment.
 ✔ The deployment is scalable, secure, and integrated with AWS cloud-native services.
 
+
+
+
+
+
+
+📌 Step 1: Development & Source Control
+Developer writes code (Flask application)
+Code is pushed to GitHub
+⬇️
+
+📌 Step 2: Jenkins CI/CD Pipeline
+1️⃣ Jenkins triggers build on new GitHub push
+2️⃣ SonarQube scan for code quality
+3️⃣ Docker image build (docker build)
+4️⃣ Trivy scan for vulnerabilities
+5️⃣ Push Docker image to AWS ECR
+6️⃣ Apply Kubernetes manifests (kubectl apply)
+
+⬇️
+
+📌 Step 3: AWS EKS Deployment
+1️⃣ Set up AWS EKS Cluster (eksctl create cluster)
+2️⃣ Configure Kubernetes CLI (kubectl)
+3️⃣ Deploy Flask app to EKS
+4️⃣ Service exposure via LoadBalancer
+
+⬇️
+
+📌 Step 4: Monitoring & Debugging
+Check pod & service status (kubectl get pods/services)
+Handle errors (kubectl describe pod)
+CI/CD monitoring in Jenkins
     
