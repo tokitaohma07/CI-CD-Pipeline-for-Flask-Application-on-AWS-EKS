@@ -47,8 +47,14 @@ aws configure
 You'll be asked to enter:
 
 AWS Access Key ID
+
 AWS Secret Access Key
+
 Default region (e.g., us-east-1)
+
 Output format (json or yaml)
+
+
+
 
 
