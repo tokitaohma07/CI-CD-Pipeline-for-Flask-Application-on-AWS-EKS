@@ -11,6 +11,37 @@ Since you don’t have eksctl or kubectl installed, let's start by installing al
 1.1 Install AWS CLI
 The AWS CLI is needed to interact with AWS services.
 
-sudo apt update && sudo apt install -y awscli
+📌 Step 1: Update System Packages
+sudo apt update && sudo apt upgrade -y
+
+
+📌 Step 2: Download AWS CLI Installer
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+
+📌 Step 3: Install Unzip (If Not Installed)
+sudo apt install unzip -y
+
+
+📌 Step 4: Extract the AWS CLI Package
+unzip awscliv2.zip
+
+
+📌 Step 5: Run the AWS CLI Installation
+sudo ./aws/install
+
+
+📌 Step 6: Verify Installation
 aws --version
-Configure AWS CLI with your IAM credentials:
+
+📌 Step 7: Configure AWS CLI
+aws configure
+
+You'll be asked to enter:
+
+AWS Access Key ID
+AWS Secret Access Key
+Default region (e.g., us-east-1)
+Output format (json or yaml)
+
+
