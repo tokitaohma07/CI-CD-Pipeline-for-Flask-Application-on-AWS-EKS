@@ -62,11 +62,8 @@ eksctl is a CLI tool for creating and managing EKS clusters.
 
 
 curl -LO "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz"
-
 tar -xzf eksctl_Linux_amd64.tar.gz
-
 sudo mv eksctl /usr/local/bin/
-
 eksctl version
 
 
