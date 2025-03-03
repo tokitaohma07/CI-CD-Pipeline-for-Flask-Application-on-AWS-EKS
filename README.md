@@ -84,4 +84,17 @@ sudo mv kubectl /usr/local/bin/
 
 kubectl version --client
 
+1.4 Install Docker
+
+sudo apt install -y docker.io
+
+sudo systemctl start docker
+
+sudo systemctl enable docker
+
+docker --version
+
+
+
+
 
