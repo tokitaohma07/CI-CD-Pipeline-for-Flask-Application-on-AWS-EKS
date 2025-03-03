@@ -27,17 +27,21 @@ sudo apt install unzip -y
 
 
 📌 Step 4: Extract the AWS CLI Package
+
 unzip awscliv2.zip
 
 
 📌 Step 5: Run the AWS CLI Installation
+
 sudo ./aws/install
 
 
 📌 Step 6: Verify Installation
+
 aws --version
 
 📌 Step 7: Configure AWS CLI
+
 aws configure
 
 You'll be asked to enter:
