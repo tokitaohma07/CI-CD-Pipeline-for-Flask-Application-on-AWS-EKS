@@ -5,7 +5,7 @@
 This project demonstrates a complete CI/CD pipeline for deploying a Flask application to AWS EKS (Elastic Kubernetes Service) using Jenkins, Docker, AWS ECR, and Kubernetes. It covers the entire DevOps lifecycle—from code integration, security scanning, containerization, and pushing images to ECR, to deploying the application on Kubernetes in a highly scalable cloud environment.
 
 
-Step 1: Install Required Tools
+#Step 1: Install Required Tools
 Since you don’t have eksctl or kubectl installed, let's start by installing all the necessary tools.
 
 1.1 Install AWS CLI
@@ -94,6 +94,113 @@ sudo systemctl enable docker
 
 docker --version
 
+
+1.5 Install Helm (Kubernetes Package Manager)
+
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+helm version
+
+
+
+#Step 2: Create an AWS EKS Cluster
+
+Now, let's create an EKS cluster with 1 control plane (master node) and 2 worker nodes.
+
+eksctl create cluster --name flask-cluster --region us-east-1 --nodegroup-name flask-workers --node-type t3.medium --nodes 2
+
+This process may take 10-15 minutes.
+
+
+Verify the cluster is created:
+
+kubectl get nodes
+
+
+#Step 3: Set Up Jenkins
+
+We’ll install Jenkins inside an EC2 instance.
+
+3.1 Install Java
+
+sudo apt install -y openjdk-11-jdk
+
+java -version
+
+3.2 Install Jenkins
+
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt update
+sudo apt install -y jenkins
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+
+
+3.3 Access Jenkins
+
+Find your instance's public IP, then open Jenkins in your browser:
+
+http://<EC2_PUBLIC_IP>:8080
+
+
+To get the admin password:
+
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+Follow the Jenkins setup wizard and install the suggested plugins.
+
+3.4 Install Plugins
+
+Go to Manage Jenkins → Manage Plugins → Install:
+
+Docker Pipeline
+Kubernetes CLI
+AWS CLI
+Pipeline
+
+
+#Step 4: Set Up Docker and AWS ECR
+
+Now, we need to set up Docker and Amazon Elastic Container Registry (ECR) for storing our Flask app images.
+
+4.1 Create an ECR Repository
+
+aws ecr create-repository --repository-name flask-repo
+
+Retrieve your ECR URL:
+
+aws ecr describe-repositories
+
+4.2 Authenticate Docker with ECR
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ECR_URL>
+
+
+#Step 5: Create a Flask App
+
+5.1 Flask App Structure
+
+flask-app/
+│── app.py
+│── requirements.txt
+│── Dockerfile
+│── deployment.yaml
+│── service.yaml
+│── jenkinsfile
+
+5.2 app.py
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Hello from Flask on AWS EKS!"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
 
 
 
