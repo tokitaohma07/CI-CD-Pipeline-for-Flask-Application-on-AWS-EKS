@@ -179,7 +179,7 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 
 #Step 5: Create a Flask App
 
-5.1 Flask App Structure
+#5.1 Flask App Structure
 
 flask-app/
 │── app.py
@@ -189,7 +189,7 @@ flask-app/
 │── service.yaml
 │── jenkinsfile
 
-5.2 app.py
+#5.2 app.py
 
 from flask import Flask
 
@@ -202,6 +202,22 @@ def home():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
+
+#5.3 requirements.txt
+
+Flask==2.0.1
+
+#5.4 Dockerfile
+
+FROM python:3.9
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "app.py"]
+
+
+$5.5 Kubernetes Deployment (deployment.yaml)
 
 
 
