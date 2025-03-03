@@ -62,8 +62,11 @@ eksctl is a CLI tool for creating and managing EKS clusters.
 
 
 curl -LO "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz"
+
 tar -xzf eksctl_Linux_amd64.tar.gz
+
 sudo mv eksctl /usr/local/bin/
+
 eksctl version
 
 
@@ -74,8 +77,11 @@ kubectl is used to interact with Kubernetes.
 
 
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
 chmod +x kubectl
+
 sudo mv kubectl /usr/local/bin/
+
 kubectl version --client
 
 
